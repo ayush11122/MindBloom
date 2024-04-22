@@ -15,33 +15,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignIn = exports.SignUp = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const DB_1 = require("../DB/DB");
+const common_1 = require("@ayush11122/common");
 require("dotenv").config();
 const secret = process.env.SECRET_KEY;
 const SignUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { success } = common_1.SignUpSchema.safeParse(req.body);
+    if (!success) {
+        return res.status(404).json({ message: "Invalid Input" });
+    }
     const { email, password, name } = req.body;
     try {
         const response = yield DB_1.user.create({
             data: {
                 email,
                 password,
-                name
+                name,
             },
         });
         if (!response) {
-            res.status(401).send("Invalid credentials");
+            res.status(401).json("Invalid credentials");
         }
         let token = jsonwebtoken_1.default.sign({ email: email, password: password }, secret);
-        res.status(200).send({
+        res.status(200).json({
             token,
             name,
         });
     }
     catch (_a) {
-        res.status(401).send("Error while SignUp");
+        res.status(401).json("Error while SignUp");
     }
 });
 exports.SignUp = SignUp;
 const SignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { success } = common_1.SignInSchema.safeParse(req.body);
+    if (!success) {
+        return res.status(404).json({ message: "Invalid Input" });
+    }
     const { email, password } = req.body;
     try {
         const response = yield DB_1.user.findUnique({
@@ -50,8 +59,8 @@ const SignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 password,
             },
             select: {
-                name: true
-            }
+                name: true,
+            },
         });
         const name = response === null || response === void 0 ? void 0 : response.name;
         if (!response) {
@@ -60,7 +69,7 @@ const SignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let token = jsonwebtoken_1.default.sign({ email: email, password: password }, secret);
         res.status(200).send({
             token,
-            name
+            name,
         });
     }
     catch (error) {

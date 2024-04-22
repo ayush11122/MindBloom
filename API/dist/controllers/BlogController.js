@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateBlog = exports.PostBlog = exports.GetOneBlog = exports.GetAllBlog = exports.GetMyBlog = void 0;
 const DB_1 = require("../DB/DB");
+const common_1 = require("@ayush11122/common");
 const GetMyBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.user;
     try {
@@ -23,8 +24,8 @@ const GetMyBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 title: true,
                 content: true,
                 published: true,
-                authorId: true
-            }
+                authorId: true,
+            },
         });
         res.json(userBlog);
     }
@@ -74,6 +75,10 @@ const GetOneBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.GetOneBlog = GetOneBlog;
 const PostBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { success } = common_1.CreateBlogSchema.safeParse(req.body);
+    if (!success) {
+        return res.status(404).json("Invalid Inputs");
+    }
     const { id } = req.user;
     const { title, content } = req.body;
     try {
@@ -84,8 +89,8 @@ const PostBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 content,
             },
             select: {
-                id: true
-            }
+                id: true,
+            },
         });
         res.status(200).json(AddBlog);
     }
@@ -95,18 +100,22 @@ const PostBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.PostBlog = PostBlog;
 const UpdateBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { blogId, title, content } = req.body;
+    const { success } = common_1.UpdateBlogSchema.safeParse(req.body);
+    if (!success) {
+        return res.status(404).json("Invalid Inputs");
+    }
+    const { id, title, content } = req.body;
     const { id: authorId } = req.user;
     try {
         const UpdateBlog = yield DB_1.blog.update({
             where: {
                 authorId,
-                id: blogId
+                id,
             },
             data: {
                 title,
                 content,
-            }
+            },
         });
         res.status(200).json(UpdateBlog);
     }

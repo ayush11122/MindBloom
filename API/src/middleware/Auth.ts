@@ -23,7 +23,6 @@ export const Auth = async (req: Request, res: Response, next: NextFunction) => {
         },
       });
       req.user = User;
-      console.log("hello")
       next();
     }
     else{

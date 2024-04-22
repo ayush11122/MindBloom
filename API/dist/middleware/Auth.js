@@ -31,7 +31,6 @@ const Auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
                 },
             });
             req.user = User;
-            console.log("hello");
             next();
         }
         else {

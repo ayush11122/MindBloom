@@ -1,20 +1,21 @@
 import { Request, Response } from "express";
 import { blog } from "../DB/DB";
+import { UpdateBlogSchema, CreateBlogSchema } from "@ayush11122/common";
 
 export const GetMyBlog = async (req: Request, res: Response) => {
   const { id } = req.user;
   try {
     const userBlog = await blog.findMany({
       where: {
-        authorId :id,
+        authorId: id,
       },
       select: {
         id: true,
         title: true,
         content: true,
         published: true,
-        authorId: true
-      }
+        authorId: true,
+      },
     });
     res.json(userBlog);
   } catch (err) {
@@ -23,8 +24,7 @@ export const GetMyBlog = async (req: Request, res: Response) => {
 };
 
 export const GetAllBlog = async (req: Request, res: Response) => {
- 
-    try {
+  try {
     const AllBlog = await blog.findMany({
       select: {
         id: true,
@@ -62,6 +62,11 @@ export const GetOneBlog = async (req: Request, res: Response) => {
 };
 
 export const PostBlog = async (req: Request, res: Response) => {
+  const { success } = CreateBlogSchema.safeParse(req.body);
+  if (!success) {
+    return res.status(404).json("Invalid Inputs");
+  }
+
   const { id } = req.user;
   const { title, content } = req.body;
 
@@ -72,29 +77,35 @@ export const PostBlog = async (req: Request, res: Response) => {
         title,
         content,
       },
-      select:{
-        id: true
-      }
+      select: {
+        id: true,
+      },
     });
-    res.status(200).json(AddBlog )
+    res.status(200).json(AddBlog);
   } catch (err) {
     res.status(404).json(err);
   }
 };
 
 export const UpdateBlog = async (req: Request, res: Response) => {
-  const { blogId, title, content } = req.body;
+  const { success } = UpdateBlogSchema.safeParse(req.body);
+  if (!success) {
+    return res.status(404).json("Invalid Inputs");
+  }
+
+  const { id, title, content } = req.body;
   const { id: authorId } = req.user;
+  
   try {
     const UpdateBlog = await blog.update({
       where: {
         authorId,
-        id :blogId
+        id,
       },
       data: {
         title,
         content,
-      }
+      },
     });
     res.status(200).json(UpdateBlog);
   } catch (err) {

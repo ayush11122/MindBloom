@@ -1,39 +1,47 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { user, blog, userType } from "../DB/DB";
-import { string } from "zod";
+import { user, userType } from "../DB/DB";
+import { SignInSchema, SignUpSchema } from "@ayush11122/common";
 require("dotenv").config();
 
 const secret: any = process.env.SECRET_KEY;
 
 export const SignUp = async (req: Request, res: Response) => {
-  const { email, password, name }: userType = req.body;
+  const { success } = SignUpSchema.safeParse(req.body);
+  if (!success) {
+    return res.status(404).json({ message: "Invalid Input" });
+  }
 
+  const { email, password, name }: userType = req.body;
   try {
     const response = await user.create({
       data: {
         email,
         password,
-        name
+        name,
       },
     });
 
     if (!response) {
-      res.status(401).send("Invalid credentials");
+      res.status(401).json("Invalid credentials");
     }
-
     let token = jwt.sign({ email: email, password: password }, secret);
-    res.status(200).send({
+    res.status(200).json({
       token,
       name,
     });
   } catch {
-    res.status(401).send("Error while SignUp");
+    res.status(401).json("Error while SignUp");
   }
 };
 
 export const SignIn = async (req: Request, res: Response) => {
-  const { email, password }  = req.body;
+  const { success } = SignInSchema.safeParse(req.body);
+  if (!success) {
+    return res.status(404).json({ message: "Invalid Input" });
+  }
+
+  const { email, password } = req.body;
 
   try {
     const response = await user.findUnique({
@@ -42,19 +50,19 @@ export const SignIn = async (req: Request, res: Response) => {
         password,
       },
       select: {
-        name :true
-      }
+        name: true,
+      },
     });
 
-    const name = response?.name
+    const name = response?.name;
     if (!response) {
       res.status(401).send("Invalid credentials");
     }
 
     let token = jwt.sign({ email: email, password: password }, secret);
     res.status(200).send({
-        token,
-        name
+      token,
+      name,
     });
   } catch (error) {
     res.status(401).send("Error while SignIn");
