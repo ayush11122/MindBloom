@@ -19,31 +19,35 @@ const common_1 = require("@ayush11122/common");
 require("dotenv").config();
 const secret = process.env.SECRET_KEY;
 const SignUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     const { success } = common_1.SignUpSchema.safeParse(req.body);
     if (!success) {
+        console.log("2", success);
         return res.status(404).json({ message: "Invalid Input" });
     }
+    console.log("3");
     const { email, password, name } = req.body;
-    try {
-        const response = yield DB_1.user.create({
-            data: {
-                email,
-                password,
-                name,
-            },
-        });
-        if (!response) {
-            res.status(401).json("Invalid credentials");
-        }
-        let token = jsonwebtoken_1.default.sign({ email: email, password: password }, secret);
-        res.status(200).json({
-            token,
+    // try {
+    console.log("check1", email, password);
+    const response = yield DB_1.user.create({
+        data: {
+            email,
+            password,
             name,
-        });
+        },
+    });
+    console.log("check");
+    if (!response) {
+        res.status(401).json("Invalid credentials");
     }
-    catch (_a) {
-        res.status(401).json("Error while SignUp");
-    }
+    let token = jsonwebtoken_1.default.sign({ email: email, password: password }, secret);
+    res.status(200).json({
+        token,
+        name,
+    });
+    // } catch {
+    //   res.status(401).json("Error while SignUp");
+    // }
 });
 exports.SignUp = SignUp;
 const SignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

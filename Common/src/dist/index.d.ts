@@ -45,7 +45,7 @@ export declare const UpdateBlogSchema: zod.ZodObject<{
     content: string;
     id: string;
 }>;
-export type SignInTypeSchema = zod.infer<typeof SignUpSchema>;
+export type SignInTypeSchema = zod.infer<typeof SignInSchema>;
 export type SignUpTypeSchema = zod.infer<typeof SignUpSchema>;
 export type CreateBlogTypeSchema = zod.infer<typeof CreateBlogSchema>;
 export type UpdateBlogTypeSchema = zod.infer<typeof UpdateBlogSchema>;

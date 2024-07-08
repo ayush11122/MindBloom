@@ -7,13 +7,17 @@ require("dotenv").config();
 const secret: any = process.env.SECRET_KEY;
 
 export const SignUp = async (req: Request, res: Response) => {
+  console.log(req.body);
   const { success } = SignUpSchema.safeParse(req.body);
   if (!success) {
+    console.log("2", success);
     return res.status(404).json({ message: "Invalid Input" });
+    
   }
-
+  console.log("3");
   const { email, password, name }: userType = req.body;
-  try {
+  // try {
+    console.log("check1", email, password);
     const response = await user.create({
       data: {
         email,
@@ -21,7 +25,7 @@ export const SignUp = async (req: Request, res: Response) => {
         name,
       },
     });
-
+    console.log("check")
     if (!response) {
       res.status(401).json("Invalid credentials");
     }
@@ -30,9 +34,9 @@ export const SignUp = async (req: Request, res: Response) => {
       token,
       name,
     });
-  } catch {
-    res.status(401).json("Error while SignUp");
-  }
+  // } catch {
+  //   res.status(401).json("Error while SignUp");
+  // }
 };
 
 export const SignIn = async (req: Request, res: Response) => {

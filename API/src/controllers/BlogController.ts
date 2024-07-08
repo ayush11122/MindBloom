@@ -13,7 +13,6 @@ export const GetMyBlog = async (req: Request, res: Response) => {
         id: true,
         title: true,
         content: true,
-        published: true,
         authorId: true,
       },
     });
@@ -30,8 +29,11 @@ export const GetAllBlog = async (req: Request, res: Response) => {
         id: true,
         title: true,
         content: true,
-        published: true,
-        authorId: true,
+        author :{
+          select: {
+            name: true
+          }
+        }
       },
     });
     res.status(200).json(AllBlog);
@@ -51,8 +53,11 @@ export const GetOneBlog = async (req: Request, res: Response) => {
         id: true,
         title: true,
         content: true,
-        published: true,
-        authorId: true,
+        author :{
+          select: {
+            name: true
+          }
+        }
       },
     });
     res.status(200).json(OneBlog);

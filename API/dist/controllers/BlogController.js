@@ -23,7 +23,6 @@ const GetMyBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 id: true,
                 title: true,
                 content: true,
-                published: true,
                 authorId: true,
             },
         });
@@ -41,8 +40,11 @@ const GetAllBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 id: true,
                 title: true,
                 content: true,
-                published: true,
-                authorId: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
             },
         });
         res.status(200).json(AllBlog);
@@ -63,8 +65,11 @@ const GetOneBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 id: true,
                 title: true,
                 content: true,
-                published: true,
-                authorId: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
             },
         });
         res.status(200).json(OneBlog);
