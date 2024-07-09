@@ -4,6 +4,7 @@ import { SignUpTypeSchema } from "@ayush11122/common/src/dist";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 const Auth = ({ type }: { type: "signup" | "signin" }) => {
+  console.log("signup por singin")
   const navigate = useNavigate();
   const [postInputs, setPostInputs] = useState<SignUpTypeSchema>({
     name: "",
