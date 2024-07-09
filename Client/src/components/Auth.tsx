@@ -29,34 +29,44 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
   }
 
   return (
-    <div className=" text-slate-700 justify-center h-screen flex flex-col items-center">
-      <div className="text-2xl font-bold">
-        {type === "signup" ? "Create an account" : "Login to your account"}
-        </div>
-      <div className="flex mb-3">
-        <div className="">
-          { type ==="signup" ? "Already have an account?" : "Don't have an account?"}
-          </div>{" "}
-        <div className="underline px-2">
-          <Link to={type === "signup" ? "/signin" : "/signup"}>
-          {type === "signup"? "Sign In" : "Sign Up"}
-          </Link>
-        </div>
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      {/* Header */}
+      <div className="text-center mb-6">
+        <h1 className="text-2xl font-bold text-slate-700">
+          {type === "signup" ? "Create an account" : "Login to your account"}
+        </h1>
       </div>
-      {type === "signup" ? 
-      <LabelledInput
-        label="Name"
-        placeholder="Ayush Srivastava"
-        onChange={(e) => {
-          setPostInputs((postInputs) => ({
-            ...postInputs,
-            name: e.target.value,
-          }));
-        }}
-      /> : null}
+
+      {/* Switch to SignIn/SignUp */}
+      <div className="flex justify-center mb-6 text-slate-700">
+        <span>
+          {type === "signup" ? "Already have an account?" : "Don't have an account?"}
+        </span>
+        <Link 
+          to={type === "signup" ? "/signin" : "/signup"} 
+          className="underline px-2 text-blue-600"
+        >
+          {type === "signup" ? "Sign In" : "Sign Up"}
+        </Link>
+      </div>
+
+      {/* Form Inputs */}
+      {type === "signup" && (
+        <LabelledInput
+          label="Name"
+          placeholder="Jenny Smith"
+          onChange={(e) => {
+            setPostInputs((postInputs) => ({
+              ...postInputs,
+              name: e.target.value,
+            }));
+          }}
+        />
+      )}
       <LabelledInput
         label="Email"
-        placeholder="ayush@gmail.com"
+        placeholder="abc@xyz.com"
         onChange={(e) => {
           setPostInputs((postInputs) => ({
             ...postInputs,
@@ -66,7 +76,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
       />
       <LabelledInput
         label="Password"
-        placeholder="123456"
+        placeholder="******"
         type="password"
         onChange={(e) => {
           setPostInputs((postInputs) => ({
@@ -75,15 +85,17 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
           }));
         }}
       />
+
+      {/* Submit Button */}
       <button
         onClick={sendRequest}
         type="button"
-        className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4
-         focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800
-          dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-        {type === "signup"  ?  "Sign Up": "Sign In"}
+        className="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-6"
+      >
+        {type === "signup" ? "Sign Up" : "Sign In"}
       </button>
     </div>
+  </div>
   );
 };
 export default Auth;

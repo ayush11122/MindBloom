@@ -10,6 +10,6 @@ export function Protected(){
 export function Defended(){
     const token = sessionStorage.getItem('token');
     return (
-        (!token) ? <Outlet /> : <Navigate to="/dashboard" />
+        (!token) ? <Outlet /> : <Navigate to="/blogs" />
     )
 }
