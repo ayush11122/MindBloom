@@ -3,6 +3,7 @@ import { blog } from "../DB/DB";
 import { UpdateBlogSchema, CreateBlogSchema } from "@ayush11122/common";
 
 export const GetMyBlog = async (req: Request, res: Response) => {
+  console.log("Get my blog")
   const { id } = req.user;
   try {
     const userBlog = await blog.findMany({
@@ -23,6 +24,7 @@ export const GetMyBlog = async (req: Request, res: Response) => {
 };
 
 export const GetAllBlog = async (req: Request, res: Response) => {
+  console.log("Get all blog")
   try {
     const AllBlog = await blog.findMany({
       select: {
@@ -43,6 +45,7 @@ export const GetAllBlog = async (req: Request, res: Response) => {
 };
 
 export const GetOneBlog = async (req: Request, res: Response) => {
+  console.log("Get one blog")
   const BlogId = req.params.BlogId;
   try {
     const OneBlog = await blog.findUnique({
@@ -67,6 +70,7 @@ export const GetOneBlog = async (req: Request, res: Response) => {
 };
 
 export const PostBlog = async (req: Request, res: Response) => {
+  console.log("Post my blog")
   const { success } = CreateBlogSchema.safeParse(req.body);
   if (!success) {
     return res.status(404).json("Invalid Inputs");
@@ -93,6 +97,7 @@ export const PostBlog = async (req: Request, res: Response) => {
 };
 
 export const UpdateBlog = async (req: Request, res: Response) => {
+  console.log("Update my blog")
   const { success } = UpdateBlogSchema.safeParse(req.body);
   if (!success) {
     return res.status(404).json("Invalid Inputs");

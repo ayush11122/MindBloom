@@ -18,12 +18,13 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
       })
         const token = response.data.token;
         const name = response.data.name;
+        console.log(name, token, response);
         sessionStorage.setItem("token", token)
         sessionStorage.setItem("name", name)
         navigate("/blogs")
     } catch(e) {
         console.log("error")
-        alert("error in Login request")
+        alert("error in request")
     }
   }
 

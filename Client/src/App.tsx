@@ -5,6 +5,7 @@ import Blog from "./pages/Blog";
 import Blogs from "./pages/Blogs";
 import { Publish } from "./pages/Publish";
 import { Defended, Protected } from "./pages/Protected";
+import Welcome from "./pages/Welcome";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <BrowserRouter>
       <Routes>
       
-        <Route path="/" element ={<h1 className="text-3xl font-bold underline">Hello world!</h1>} />
+        <Route path="/" element ={<Welcome />} />
         <Route element= {<Defended />}>
         <Route path="/signup" element = {<SignUp/>}/>
         <Route path="/signin" element = {<SignIn/>}/>

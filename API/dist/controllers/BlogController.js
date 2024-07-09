@@ -13,6 +13,7 @@ exports.UpdateBlog = exports.PostBlog = exports.GetOneBlog = exports.GetAllBlog 
 const DB_1 = require("../DB/DB");
 const common_1 = require("@ayush11122/common");
 const GetMyBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Get my blog");
     const { id } = req.user;
     try {
         const userBlog = yield DB_1.blog.findMany({
@@ -34,6 +35,7 @@ const GetMyBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.GetMyBlog = GetMyBlog;
 const GetAllBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Get all blog");
     try {
         const AllBlog = yield DB_1.blog.findMany({
             select: {
@@ -55,6 +57,7 @@ const GetAllBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.GetAllBlog = GetAllBlog;
 const GetOneBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Get one blog");
     const BlogId = req.params.BlogId;
     try {
         const OneBlog = yield DB_1.blog.findUnique({
@@ -80,6 +83,7 @@ const GetOneBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.GetOneBlog = GetOneBlog;
 const PostBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Post my blog");
     const { success } = common_1.CreateBlogSchema.safeParse(req.body);
     if (!success) {
         return res.status(404).json("Invalid Inputs");
@@ -105,6 +109,7 @@ const PostBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.PostBlog = PostBlog;
 const UpdateBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Update my blog");
     const { success } = common_1.UpdateBlogSchema.safeParse(req.body);
     if (!success) {
         return res.status(404).json("Invalid Inputs");
